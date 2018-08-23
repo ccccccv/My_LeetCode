@@ -31,3 +31,28 @@ int lengthOfLongestSubstring(char* s) {
     maxLen = max((eIndex - sIndex), maxLen);
     return maxLen;
 }
+
+// c++
+class Solution {
+public:
+    int max(int a, int b){
+        return a > b ? a : b;
+    }
+    int lengthOfLongestSubstring(string s) {
+        int start = 0, end = 0, maxLen = 0;
+        int map[256];
+        for(int i = 0; i < 256; ++i)    map[i] = -1;
+        
+        while(s[end] != '\0'){
+            if(map[s[end]] >= start){              
+                maxLen = max(end - start, maxLen);
+                start = map[s[end]] + 1;
+            }
+            
+            map[s[end]] = end;
+            end++;
+        }
+        maxLen = max(end - start, maxLen);
+        return maxLen;
+    }
+};
