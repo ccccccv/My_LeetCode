@@ -1,0 +1,33 @@
+// c
+int max(int a, int b) {
+    int m = a > b? a : b;
+    return m;
+}
+int lengthOfLongestSubstring(char* s) {
+    int sIndex = 0; // start Index
+    int eIndex = 0; // end Index
+    int maxLen = 0; // max Length
+    
+    int last_seen[256] = {0}; // holds the index of where a give char in the string was last seen
+    for (int i = 0; i < 256;  i++) {
+        last_seen[i] = -1; 
+    }
+    
+    while(s[eIndex] != '\0')
+    {
+        //if we have already seen the current char at a location between the current start index and end index
+        if(last_seen[s[eIndex]] >= sIndex) {
+            maxLen = max((eIndex - sIndex), maxLen);
+            sIndex = last_seen[s[eIndex]] + 1; //update start index to point to the last know location of already seen char +1
+        } 
+        
+        // update last_seen table to hold the latest location (index) of a char in s
+        last_seen[s[eIndex]] = eIndex;
+        eIndex++;
+        
+    }
+    
+    //To cover cases like "abc", "df"
+    maxLen = max((eIndex - sIndex), maxLen);
+    return maxLen;
+}
