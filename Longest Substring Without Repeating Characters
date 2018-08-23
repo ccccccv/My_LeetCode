@@ -86,3 +86,22 @@ class Solution {
     get one char of string: string.charAt(index);
     get maximum: Math.max(...,...);
 */
+
+// python
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+   
+        begin, end, maxLen, table = 0, 0, 0, {}
+        if len(s) == 1:
+            return 1
+        for char in s:
+            if char in table:            
+                if maxLen < end - begin:
+                    maxLen = end - begin
+                if begin <= table[char]:
+                    begin = table[char] + 1
+            table[char] = end
+            end += 1
+        if maxLen < end - begin:
+            maxLen = end - begin
+        return maxLen
