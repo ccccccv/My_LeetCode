@@ -76,6 +76,7 @@ char* longestPalindrome(char* s) {
         iMirror = 2*CP - i;
         L[i] = 0;
         diff = CRP - i;
+	
         if(diff > 0) 
             L[i] = (L[iMirror] <= diff) ? L[iMirror] : diff;
         
