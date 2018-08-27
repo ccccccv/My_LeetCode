@@ -331,3 +331,14 @@ class Solution(object):
         else:
             return (all[(nums1Size + nums2Size) / 2] + all[(nums1Size + nums2Size) / 2 - 1]) / 2.0
     
+// python version 2 52ms
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        l = sorted(nums1+nums2)
+        size = len(l)
+        return l[size/2] if size % 2 == 1 else (l[size/2-1]+l[size/2])/2. 
