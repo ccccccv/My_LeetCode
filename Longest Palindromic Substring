@@ -101,3 +101,64 @@ char* longestPalindrome(char* s) {
     *(result+i) = '\0';
     return result;
 }
+
+\\ c++ version 1 16ms
+class Solution {
+public:
+    string longestPalindrome(string s) {
+    int size = s.length();
+    if(size == 0 || size == 1)
+        return s;
+    int center, left, right;
+    int maxLen = 0, resultL = 0, resultR = 0;
+    for(center = 1, left = 1, right = 1; center < size; ++center){
+        left = center; right = center;
+        while(left > 0 && s[right + 1] != '\0'){
+            if(s[left - 1] == s[right + 1]){                               
+                left--;
+                right++;
+            }
+            else{
+                break;
+            }
+        }
+        if(maxLen < right - left + 1){
+            resultL = left;
+            resultR = right;
+            maxLen = right - left + 1;
+        }
+    }
+    for(center = 1, left = 0, right = 1; center < size; ++center){
+        if(s[center - 1] == s[center]){
+            left = center - 1; right = center;
+            while(left > 0 && s[right + 1] != '\0'){
+                if(s[left - 1] == s[right + 1]){
+                    left--;
+                    right++;
+                }
+                else
+                    break;
+            }
+            if(maxLen < right - left + 1){
+                resultL = left;
+                resultR = right;
+                maxLen = right - left + 1;
+            }
+        }
+        else
+            continue;
+    }
+    
+    if(s[resultL] == NULL){
+        char *result = new char[1];
+        result[0] = '\0';
+        return result;
+    }
+    char *result = new char [maxLen + 1];
+    result[maxLen] = '\0';
+    for(int i = resultL,j = 0; i <= resultR; ++i,++j){
+        result[j] = s[i];
+    }
+    return result;
+    }
+};
