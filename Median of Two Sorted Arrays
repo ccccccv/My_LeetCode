@@ -149,3 +149,44 @@ public:
     return -1;
 } 
 };
+
+// java version 1 40ms
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int nums1Size = nums1.length, nums2Size = nums2.length;
+        if(nums1 == null){
+            
+            if(nums2Size % 2 == 1)   return nums2[nums2Size / 2];
+            else return (nums2[nums2Size / 2] + nums2[nums2Size / 2 - 1]) / 2.0;
+        }
+        if(nums2 == null){
+            if(nums2Size % 2 == 1)   return nums1[nums1Size / 2];
+            else return (nums1[nums1Size / 2] + nums1[nums1Size / 2 - 1]) / 2.0;
+        }
+
+        int[] all = new int[(nums1Size + nums2Size) / 2 + 1];
+        for(int i = 0, index1 = 0, index2 = 0; i < (nums1Size + nums2Size) / 2 + 1; ++i){
+            if(index1 == nums1Size){
+                all[index1 + index2] = nums2[index2];
+                index2++;
+            }
+            else if(index2 == nums2Size){
+                all[index1 + index2] = nums1[index1];
+                index1++;
+            }
+            else if(nums1[index1] < nums2[index2]){
+                all[index1 + index2] = nums1[index1];
+                index1++;
+            }
+            else{
+                all[index1 + index2] = nums2[index2];
+                index2++;
+            }
+        }
+        if((nums1Size + nums2Size) % 2 == 1)
+            return all[(nums1Size + nums2Size) / 2];
+        else
+            return (all[(nums1Size + nums2Size) / 2] + all[(nums1Size + nums2Size) / 2 - 1]) / 2.0;
+    }
+}
+
