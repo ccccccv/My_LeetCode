@@ -55,3 +55,48 @@ char* longestPalindrome(char* s) {
     }
     return result;
 }
+
+// c version 2 0ms
+char* longestPalindrome(char* s) {
+    int N = strlen(s);
+    if(s==NULL || N==0 || N==1) return s;
+    N = 2*N+1;
+    int L[N]; //LPS Length Array
+    L[0] = 0;
+    L[1] = 1;
+    int CP = 1; //centerPosition 
+    int CRP = 2; //centerRightPosition
+    int i, iMirror; // CurRP, CurLP
+	int diff = -1; // CRP - CurRP
+	int maxLPSLength = 0;
+	int maxLPSCenterPosition = 0;
+	int start = -1;
+    
+    for(i = 2; i<N; i++){
+        iMirror = 2*CP - i;
+        L[i] = 0;
+        diff = CRP - i;
+        if(diff > 0) 
+            L[i] = (L[iMirror] <= diff) ? L[iMirror] : diff;
+        
+        while( (i+L[i])<(N-1) && (i-L[i])>0 &&
+                  ((i+L[i]+1)%2==0 || 
+                   (s[(i+L[i]+1)/2] == s[(i-L[i]-1)/2])) ){
+                L[i]++;
+        }
+        if(L[i] > maxLPSLength){
+			maxLPSLength = L[i];
+			maxLPSCenterPosition = i;
+		}
+		if (i + L[i] > CRP) {
+			CP = i;
+			CRP = i + L[i];
+		}
+    }
+    start = (maxLPSCenterPosition - maxLPSLength)/2;
+    char* result = (char*)malloc(maxLPSLength*sizeof(char)+1);
+	for(i=0; i<maxLPSLength; i++)
+		*(result+i) = *(s+i+start);
+    *(result+i) = '\0';
+    return result;
+}
