@@ -289,3 +289,45 @@ class Solution {
         
     }
 }
+
+// python version 1 64ms
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        nums1Size = len(nums1)
+        nums2Size = len(nums2)     
+        all = {}
+        if nums1Size == 0:
+            if nums2Size % 2 == 1:
+                return  nums2[int(math.floor(nums2Size / 2))]
+            else:
+                return (nums2[int(math.floor(nums2Size / 2))] + nums2[int(math.floor(nums2Size / 2)) - 1]) / 2.0
+        if nums2Size == 0:
+            if nums1Size % 2 == 1:
+                return  nums1[int(math.floor(nums1Size / 2))]
+            else:
+                return (nums1[nums1Size / 2] + nums1[(nums1Size / 2) - 1]) / 2.0        
+        i, index1, index2 = 0, 0, 0
+        while i < int(math.floor((nums1Size + nums2Size) / 2)) + 1:
+            if index1 == nums1Size:
+                all[index1 + index2] = nums2[index2]
+                index2 += 1       
+            elif index2 == nums2Size:
+                all[index1 + index2] = nums1[index1]
+                index1 += 1
+            elif nums1[index1] < nums2[index2]:
+                all[index1 + index2] = nums1[index1]
+                index1 += 1      
+            else:
+                all[index1 + index2] = nums2[index2]
+                index2 += 1
+            i += 1
+        if (nums1Size + nums2Size) % 2 == 1:
+            return all[int(math.floor((nums1Size + nums2Size) / 2))]
+        else:
+            return (all[(nums1Size + nums2Size) / 2] + all[(nums1Size + nums2Size) / 2 - 1]) / 2.0
+    
