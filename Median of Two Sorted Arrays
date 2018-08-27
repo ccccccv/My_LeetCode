@@ -190,3 +190,102 @@ class Solution {
     }
 }
 
+// java version 2
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {        
+        int length1 = nums1.length;
+        int length2 = nums2.length;
+        /*
+        保证 nums1.length<=nums2.length
+        */
+        if(length1>length2){
+            int[] temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
+            length1 = nums1.length;
+            length2 = nums2.length;
+        }
+        
+        if(length2==0)  return 0.0;
+        if(length1==0){
+            if(length2%2!=0)
+                return nums2[length2/2]*1.0;
+            else{
+                return (nums2[length2/2-1]+nums2[length2/2])/2.0;
+            }
+            
+            
+        }
+        
+        /*
+        i将长度的m的数组一份为二，i可以为0~m，m+1种取值，每种划分，两个子数组的长度一次为：i,m-i
+        j将长度为n的数组一份为二，j可以取0~n，n+1种取值，每种划分，两个字数组长度一次为：j,n-j    （假定n>=m）
+        
+        中位数将数组整体一份为二，并且具有如下特点：中位数将数组划分为两个等长或者长度相差为1 
+                i
+        A[i-1]  /  A[i]
+        B[j-1]  /  B[j]
+                j
+        上图的两个//分别代表i和j的切分位置
+        并且有：A[i-1]<=B[j]   B[j-1]<=A[i]
+        
+        综上：当m+n为偶数时，左右两边数组长度相等：i+j = (m-i)+(n-j)  ->   i+j = (m+n)/2
+              当m+n为奇数时，假设将多出的那个数划分到左侧,即左侧比右侧长度大一：i+j = (m-i)+（n-j）+1 ->i+j=（m+n+1)/2
+              
+              综上： i+j = (m+n+1)/2         (m<=n)
+              注意到：当i>0时，有j<n;   当i<m时：j>0
+              
+              我们的目标是找到一个i，满足左边和右边长度相等或者长度相差1（只要满足j=(m+n+1)/2-i即可），另外有A[i-1]<=B[j]   B[j-1]<=A[i]
+        */
+        
+        int i_min = 0;
+        int i_max = length1;  //
+        int aux = (length1+length2+1)/2;
+        
+        while(i_min<=i_max){
+            int i = (i_min+i_max)/2;//i限定在i_minhe i_max之间，不会出现无效索引的情况，但是j就不一样，所以j要指向长度较长的数组，否则会数组越界
+            int j = aux - i;        //如果i数组:[1,3]；j数组[3];第一次i=(0+2)/2=1；j=(2+1+1)/2=2,而此时j数组的长度为1,2下标越界，j-1=1下标也越界了
+            if(i>0&&nums1[i-1]>nums2[j])//i>0即有j<n  i==0为边界情况，后面考虑
+                i_max = i-1;//想办法减小A[i-1],增大B[j],
+            else if(i<length1&&nums1[i]<nums2[j-1])//,i偏小，所以要增大i；i<m，同时有j>0
+                i_min = i+1;//想办法增大A[i]
+            else{
+                //由于  中位数一定存在，到达边界和成功找到满足条件的i均是成功
+                //边界情况 ： i==0  i==m   j==0  j==m  或者 已经满足A[i-1]<B[j] 以及 B[j-1]<A[i]
+                
+                //由之前知道，如果总的数组长度为奇数，左边部分比右边部分长度多一个，当然最后的中位数也就是左边最大值了
+                
+                //当length1+length2为奇数的时候，中位数就是左半部分数组的最大值，max_left；若数组总长度是偶数，中位数为：(max_left+max_right)/2
+                //所以至少需要先找出max_left；至于max_right与总长度是奇数还是偶数有关
+                
+                //求解max_left
+                int max_left = 0;
+                if(i==0&&nums1[i]>=nums2[j-1])
+                    max_left = nums2[j-1];
+                else if(j==0&&nums1[i-1]<=nums2[j])
+                    max_left = nums1[i-1];
+                else
+                    max_left = Math.max(nums1[i-1],nums2[j-1]);//nums1[i-1]>=nums2[j-1]?nums1[i-1]:nums2[j-1];
+                
+                if((length1+length2)%2!=0){//总长度为奇数，返回max_left
+                    return max_left*1.0;
+                }
+               
+                //当合并后数组长度为偶数时，中位数为：(max_left+max_right)/2
+                int min_right = 0;
+                if(i==length1)
+                    min_right = nums2[j];
+                else if(j==length2)
+                    min_right = nums1[i];
+                else
+                    min_right = Math.min(nums1[i],nums2[j]);//nums1[i]<=nums2[j]?nums1[i]:nums2[j];
+                
+                return (max_left+min_right)/2.0;
+                
+            }
+            
+        }
+        return 1.0;
+        
+    }
+}
