@@ -336,3 +336,38 @@ class Solution(object):
                 L, H, maxLen = low, high, high - low + 1
             index += 1
         return s[int(L) : int(H + 1)]
+
+// python version 2 40ms
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s:
+            return ''
+        sr = s[::-1]
+        if s == sr:
+            return s
+        end = i = 0 
+        mlen = 1
+        n = len(s)
+        
+        while i < n:
+            #expand 2 places from the old Palindromic string, if the old one is Palindromic, 
+            # when i+1, it still use the same mid
+            if i - mlen - 1 >= 0 and s[(i-mlen-1):(i+1)] == sr[(n-i-1):(n+1+mlen-i)]:
+                mlen += 2
+                end = i
+                i += 1
+                continue
+            
+            # check if we can expand one more
+            if i - mlen >= 0 and s[(i-mlen):(i+1)] == sr[(n-i-1):(n+mlen-i)]:
+                mlen += 1
+                end = i
+                
+            i += 1        
+            
+            
+        return s[(end-mlen+1):(end+1)]
