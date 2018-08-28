@@ -277,3 +277,37 @@ class Solution {
         return s.substring(L, H + 1);
     }
 }
+
+// java version 2 8ms
+class Solution {
+    int max = 0;
+    int left = 0;
+    char[] chars;
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0){
+            return s;
+        }
+        chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++){
+            i = longestPalindrome(i);
+        }
+        return s.substring(left, left + max);
+    }
+    
+    private int longestPalindrome(int index){
+        int ll = index, rr = index;
+        while (rr + 1 < chars.length && chars[rr] == chars[rr + 1]){
+            rr++;
+        }
+        int temp = rr;
+        while (ll - 1 >= 0 && rr + 1 < chars.length && chars[ll - 1] == chars[rr + 1]){
+            ll--;
+            rr++;
+        }
+        if (rr - ll  + 1 > max){
+            max = rr - ll + 1;
+            left = ll;
+        }
+        return temp;
+    }
+}
