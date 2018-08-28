@@ -311,3 +311,28 @@ class Solution {
         return temp;
     }
 }
+
+// python version 1 680ms
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        low, high, maxLen, L, H, index = 0, 0, 0, 0, 0, 0
+        li = list(s)
+        if len(s) <= 1:
+            return s
+        while index < len(s):
+            if len(s) - index <= maxLen / 2:
+                break
+            high, low = index, index
+            while (high + 1) < len(s) and li[high] == li[high + 1]:
+                high += 1
+            while low > 0 and (high + 1) < len(s) and li[low - 1] == li[high + 1]:
+                high += 1
+                low -= 1
+            if maxLen < high - low + 1:
+                L, H, maxLen = low, high, high - low + 1
+            index += 1
+        return s[int(L) : int(H + 1)]
