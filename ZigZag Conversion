@@ -123,3 +123,42 @@ public:
     return result;
 };
 };
+
+// java version 1 33ms
+class Solution {
+    public String convert(String s, int numRows) {
+        int length = s.length();
+        char[] result = new char[length];
+        if (length == 1||length==0||numRows == 1) return s;
+        int count = 0;
+        for(int i =0; i< numRows; i++){
+            int j = 0;
+            while(true){
+                if(i==0||i==numRows-1){
+                    int index = j+i;
+                    if (index< length){
+                        result[count] = s.charAt(index);
+                        count += 1;
+                    }
+                    else{break;}
+                }
+                else{
+                    int index_l = j+i;
+                    int index_r = j+2*numRows-2 -i;
+                    if (index_l< length){
+                        result[count] = s.charAt(index_l);
+                        count += 1;
+                    }
+                    if (index_r< length){
+                        result[count] = s.charAt(index_r);
+                        count += 1;
+                    }
+                    else{break;}
+                }
+                j+=2*numRows-2;
+            }
+        }
+        String rst = new String(result);
+        return rst;
+    }
+}
