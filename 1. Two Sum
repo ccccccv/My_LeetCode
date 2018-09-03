@@ -1,0 +1,149 @@
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+------------------------------------------
+
+// c version 1 64ms
+int* twoSum(int* nums, int numsSize, int target) {
+    
+    int *result = (int*)malloc(2*sizeof(int));
+    int tempA,tempB;
+    for(int i=0;i<numsSize;++i){
+        tempA=nums[i];
+        for(int j=i+1;j<numsSize;++j){
+            tempB=nums[j];
+            if(tempA+tempB==target){
+                result[0]=i;result[1]=j;
+                return result;
+            }
+        }
+    }
+    return result;
+}
+
+// c version 2 4ms
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+typedef struct node{
+   int index;
+   int value;
+}node;
+
+
+static int compare(const void *a, const void *b)
+{
+    return ((node *) a)->value - ((node*) b)->value;
+}
+
+int* twoSum(int* nums, int numsSize, int target) {
+    
+    node *hash = (node*)malloc(sizeof(node)*numsSize);
+    int i;
+    for(i=0;i<numsSize;i++)
+    {
+        hash[i].index = i;
+        hash[i].value = nums[i];
+    }
+    qsort(hash, numsSize, sizeof(node), compare);
+    
+    int *a = (int*)malloc(sizeof(int)*2);
+    
+    i=0;
+    int j=numsSize-1;
+    
+    while(1)
+    {
+        if(hash[i].value + hash[j].value > target) j--;
+        else if(hash[i].value + hash[j].value < target) i++;
+        else 
+        {
+            a[0] = hash[i].index;
+            a[1] = hash[j].index;
+            break;
+        }
+    }
+    return a;
+}
+
+// c++ version 1 4ms
+static auto x = [](){
+    std::ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return 0;
+}();
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        unordered_map<int,int> m;
+        m.reserve(n);
+        for (int i = 0; i < n; ++i) {
+            int v = nums[i];
+            auto it = m.find(target - v);
+            if (it != m.end())
+                return { it->second, i };
+            m[v] = i;
+        }
+        return vector<int>();
+    }
+};
+
+// java version 1 4ms
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+                 final int il = nums.length;
+        int il2 = (il >> 2) - 1;
+
+        int pot = 2;
+        while((il2 >>= 1) > 0) pot <<= 1;
+        final int bitMod = pot - 1;
+        final int[] bucket = new int[pot];
+        final int[] linked = new int[il];
+
+        final int firstVal = nums[0];
+
+        for (int i = 1; i < il; i++) {
+            int currNum = nums[i];
+            int complement = target - currNum;
+
+            if (complement == firstVal) {
+                return new int[] { 0, i };
+            }
+
+            int complementLLIndex = bucket[complement & bitMod];
+            while(complementLLIndex != 0) {
+                if(nums[complementLLIndex] == complement) {
+                    //Found
+                    return new int[] { complementLLIndex, i };
+                }
+                complementLLIndex = linked[complementLLIndex];
+            }
+            int currNumLLIndex = currNum & bitMod;
+            linked[i] = bucket[currNumLLIndex];
+            bucket[currNumLLIndex] = i;
+        }
+        return null;          
+    }
+}
+
+// python version 1 24ms
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        map_n = {}
+        for i, x in enumerate(nums):
+            if target-x in map_n:
+                return [map_n[target-x], i]
+            map_n[x] = i
