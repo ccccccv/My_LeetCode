@@ -178,7 +178,7 @@ class Solution(object):
         L = [''] * numRows
         index, step = 0, 1
 
-        for x in s:
+        for x in s:// The key point of this algorithm is that when goes down, row increases, goes up, row decreases and colum increases
             L[index] += x
             if index == 0:
                 step = 1
@@ -187,3 +187,9 @@ class Solution(object):
             index += step
 
         return ''.join(L)
+/*
+    2-D list: L = [''] * numRows
+              myList = [([0] * 3) for i in range(4)]
+    append list: L[index] += x
+    opperation of list: http://www.runoob.com/python/python-lists.html
+/*
