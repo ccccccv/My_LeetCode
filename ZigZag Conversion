@@ -1,0 +1,125 @@
+// c version 1 12ms
+char* convert(char* s, int numRows) {
+    const int numChars = strlen(s);
+    const int block = numRows * 2 - 2;
+    if(numChars <= numRows || block == 0)
+        return s;   
+    const int numBlocks = numChars % block == 0 ? numChars / block : numChars / block + 1;    
+    const int leastRow = numChars % block == 0 ? block : numChars % block;
+    char ZigZag[numBlocks][block];
+    char* result = (char*)malloc(sizeof(char) * (numChars + 1));
+    result[numChars] = '\0';
+    for(int iBlock = 0, index = 0, iS = 0; iS < numChars; ++iS){
+        ZigZag[iBlock][index] = s[iS];
+        index++;
+        if(index == block){
+            iBlock++;index = 0;
+        }
+    }
+    for(int row = 0, index = 0; row < numRows; ++row){
+        //printf("row = %d, index = %d, numRows = %d\n",row,index,numRows);
+        for(int iBlock = 0; iBlock < numBlocks && index < numChars; ++iBlock){
+            //printf("%d ",index);
+            //printf("row = %d, index = %d, iBlock = %d\n",row,index,iBlock);
+            if(row > 0 && row >= leastRow && iBlock == numBlocks - 1){
+                //printf("first if\n");
+                continue;}
+            result[index] = ZigZag[iBlock][row];
+            //printf("%c",result[index]);
+            //printf("1row = %d, iBlock = %d, index = %d, %c\n",row, iBlock, index,ZigZag[iBlock][row]);
+            index++;            
+            if(iBlock == numBlocks - 1 && row < numRows - (leastRow - numRows) - 1 && row > 0 && row < numRows){
+                //printf("second if\n");
+                continue;}
+
+            if(row != 0 && row != numRows - 1){                
+                result[index] = ZigZag[iBlock][block - row];
+                //printf("%c",result[index]);
+                //printf("2row = %d, iBlock = %d, index = %d, %c\n",row, iBlock, index,ZigZag[iBlock][block - row]);
+                index++;
+                
+            }
+        }
+    }
+    return result;
+}
+
+// c++ version 1 16ms
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        const int numChars = s.length();
+        const int block = numRows * 2 - 2;
+        if(numChars <= numRows || block == 0 || numRows == 1)
+            return s;   
+        const int numBlocks = numChars % block == 0 ? numChars / block : numChars / block + 1;    
+        const int leastRow = numChars % block == 0 ? block : numChars % block;
+        char ZigZag[numBlocks][block];
+        char* result = new char[sizeof(char) * (numChars + 1)];
+        result[numChars] = '\0';
+        for(int iBlock = 0, index = 0, iS = 0; iS < numChars; ++iS){
+            ZigZag[iBlock][index] = s[iS];
+            index++;
+            if(index == block){
+                iBlock++;index = 0;
+            }
+        }
+        for(int row = 0, index = 0; row < numRows; ++row){
+            for(int iBlock = 0; iBlock < numBlocks && index < numChars; ++iBlock){
+                if(row > 0 && row >= leastRow && iBlock == numBlocks - 1){
+                    continue;}
+                result[index] = ZigZag[iBlock][row];
+                index++;            
+                if(iBlock == numBlocks - 1 && row < numRows - (leastRow - numRows) - 1 && row > 0 && row < numRows){
+                    continue;}
+                if(row != 0 && row != numRows - 1){                
+                    result[index] = ZigZag[iBlock][block - row];
+                    index++;
+                }
+            }
+        }
+        return result;
+    }
+};
+
+
+// c++ version 2 12ms
+static const auto speedup = [](){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    return nullptr;
+}();
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+    string result = "";
+    int length = s.size();
+    if (length == 1||length==0||numRows == 1) return s;
+    for(int i =0; i< numRows; i++){
+        int j = 0;
+        while(1){
+            if(i==0||i==numRows-1){
+                int index = j+i;
+                if (index< length){
+                    result+=s[index];
+                }
+                else{break;}
+            }
+            else{
+                int index_l = j+i;
+                int index_r = j+2*numRows-2 -i;
+                if (index_l< length){
+                    result+=s[index_l];
+                }
+                if (index_r< length){
+                    result+=s[index_r];
+                }
+                else{break;}
+            }
+            j+=2*numRows-2;
+        }
+    }
+    return result;
+};
+};
