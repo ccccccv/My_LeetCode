@@ -1,0 +1,33 @@
+List:
+  create empty list: map_n = {}
+  find element due to index: list[index]
+  2-D list: L = [''] * numRows
+    myList = [([0] * 3) for i in range(4)]
+  append list: 
+    L[index] += x----->append x to current semi-list
+    .join(L)----->append all the element in this 2-D list
+  opperation of list: http://www.runoob.com/python/python-lists.html
+String:
+  length of string: len(str)
+  find element due to index: 
+    s[int(L) : int(H + 1)]----->left close right open, it means return include s[H] not include s[H+1]
+    sr = s[::-1]----->reverse the string
+Data Type:
+  convert to float automatically
+  force to convert: r = int(`s*x`[::-1])
+  null: None, {}
+  judge list node nullptr: if l1:
+  data type and operations: https://www.cnblogs.com/littlefivebolg/p/8982889.html
+    math.ceil(), math.floor()----->*Return type is FLOAT
+    sort list: l = sorted(nums1+nums2)
+    range(int)----->generate a list 0~int, http://www.runoob.com/python/python-func-range.html
+    enumerate(seq): http://www.runoob.com/python/python-func-enumerate.html
+  
+For:
+  traverse a list and get its index: for i, element in enumerate(seq):, http://www.runoob.com/python/python-func-enumerate.html
+  break and continue the same as c, c++
+If:    
+  return l[size/2] if size % 2 == 1 else (l[size/2-1]+l[size/2])/2.  
+  
+Functions:
+  comparision: cmp(x, 0), http://www.runoob.com/python/func-number-cmp.html
