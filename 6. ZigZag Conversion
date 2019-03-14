@@ -24,6 +24,8 @@ A   L S  I G
 Y A   H R
 P     I
 -------------------------------------------------------------------
+Easily calculate the rules.
+-------------------------------------------------------------------
 
 // c version 1 12ms
 char* convert(char* s, int numRows) {
