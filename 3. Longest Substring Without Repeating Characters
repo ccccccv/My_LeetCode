@@ -16,7 +16,10 @@ Output: 3
 Explanation: The answer is "wke", with the length of 3. 
              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 ------------------------------------------------------------------------------------------
-
+Use map to record the index of char, while the index of map is the int value of char.
+When the second time visit repeated char, minus start with end.
+Notice how to update the new start, that's the following number of the index of repeated char.
+------------------------------------------------------------------------------------------
 // c
 int max(int a, int b) {
     int m = a > b? a : b;
@@ -50,7 +53,6 @@ int lengthOfLongestSubstring(char* s) {
     maxLen = max((eIndex - sIndex), maxLen);
     return maxLen;
 }
-
 // c++
 class Solution {
 public:
