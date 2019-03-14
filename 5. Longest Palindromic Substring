@@ -9,6 +9,10 @@ Example 2:
 Input: "cbbd"
 Output: "bb"
 -------------------------------------------------------------
+First skip duplicate chars to find the middle of palindromic.
+Then expand from both ends.
+Notice that new middle cannot be either previous middle if there are two middles.
+-------------------------------------------------------------
 // c version 1 8ms
 char* longestPalindrome(char* s) {
     int size = strlen(s);
