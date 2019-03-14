@@ -14,6 +14,9 @@ nums2 = [3, 4]
 
 The median is (2 + 3)/2 = 2.5
 --------------------------------------------------------------
+Use two cuts to separate two arrays. The sum of those two cuts must equal the mid point of the merge of those two arrays.
+Then do binary search.
+--------------------------------------------------------------
 
 // c version 1 36ms
 double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
